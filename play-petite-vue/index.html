@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>play-petite-vue</title>
+    <!-- auto init -->
+    <!-- <script src="https://unpkg.com/petite-vue" defer init></script> -->
+  </head>
+  <body>
+    <h1>petite-vue</h1>
+    <!-- anywhere on the page -->
+    <div id="app1" v-scope="{ count: 0 }">
+      <h2>app1: simple</h2>
+      <p>count: {{ count }}</p>
+      <button @click="count++">increment</button>
+    </div>
+
+    <div id="app2" v-scope>
+      <h2>app2: getter</h2>
+      <p>count: {{ count }}, plusOne: {{ plusOne }}</p>
+      <button @click="increment">increment</button>
+    </div>
+
+    <div id="app3" v-scope>
+      <h2>app3: v-if</h2>
+      <p
+        v-if="isShow"
+        @mounted="console.log('mounted on: ', $el)"
+        @unmounted="console.log('unmounted: ', $el)"
+      >
+        hello petite-vue
+      </p>
+      <button @click="handleToggle">toggle</button>
+    </div>
+
+    <div id="app4" v-scope="{ count: 0 }">
+      <h2>app4: v-effect</h2>
+      <p v-effect="$el.style.color = count % 2 === 0 ? '#f00' : '#0f0'">
+        count: {{ count }}
+      </p>
+      <button @click="count++">increment</button>
+    </div>
+
+    <div id="app5">
+      <h2>app5: reusable scope logic</h2>
+      <div style="display: flex">
+        <div v-scope="Counter({ initialCount: 1 })" @mounted="mounted">
+          <p>{{ count }}</p>
+          <button @click="inc">increment</button>
+        </div>
+
+        <div v-scope="Counter({ initialCount: 2 })">
+          <p>{{ count }}</p>
+          <button @click="inc">increment</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="app6">
+      <h2>app6: reusable scope logic with template</h2>
+      <template id="counter-template">
+        My count is {{ count }}
+        <button @click="inc">++</button>
+      </template>
+      <div v-scope="Counter({ initialCount: 1 })"></div>
+      <div v-scope="Counter({ initialCount: 2 })"></div>
+    </div>
+
+    <div id="app7" v-scope="{ localCount: 0 }">
+      <h2>app7: shared reactive data</h2>
+      <p>Global {{ store.count }}</p>
+      <button @click="store.inc">increment</button>
+      <p>Local {{ localCount }}</p>
+      <button @click="localCount++">increment</button>
+    </div>
+
+    <div id="app8" v-scope="{ count: 0 }">
+      <h2>app8: custom directives: v-html</h2>
+      <p>count: {{ count }}</p>
+      <p>v-html: <spam v-html="count"></spam></p>
+      <button @click="count++">increment</button>
+    </div>
+    <!-- manual init -->
+    <!-- <script src="https://unpkg.com/petite-vue"></script>
+    <script>
+      PetiteVue.createApp().mount();
+    </script> -->
+    <!-- es module -->
+    <script type="module">
+      import { createApp, reactive } from "https://unpkg.com/petite-vue?module";
+      createApp().mount("#app1");
+      // =================================================================
+      createApp({
+        // exposed to all expressions
+        count: 0,
+        // getters
+        get plusOne() {
+          return this.count + 1;
+        },
+        // methods
+        increment() {
+          this.count++;
+        },
+      }).mount("#app2");
+      // =================================================================
+      createApp({
+        isShow: true,
+        handleToggle() {
+          this.isShow = !this.isShow;
+        },
+      }).mount("#app3");
+      // =================================================================
+      createApp().mount("#app4");
+      // =================================================================
+      function Counter(props) {
+        return {
+          count: props.initialCount,
+          inc() {
+            this.count++;
+          },
+          mounted() {
+            console.log(`I'm mounted!`);
+          },
+        };
+      }
+
+      createApp({
+        Counter,
+      }).mount("#app5");
+      // =================================================================
+      function CounterWithTemplate(props) {
+        return {
+          $template: "#counter-template",
+          count: props.initialCount,
+          inc() {
+            this.count++;
+          },
+        };
+      }
+
+      createApp({
+        Counter: CounterWithTemplate,
+      }).mount("#app6");
+      // =================================================================
+      const store = reactive({
+        count: 0,
+        inc() {
+          this.count++;
+        },
+      });
+
+      // manipulate it here
+      store.inc();
+
+      createApp({
+        // share it with app scopes
+        store,
+      }).mount("#app7");
+      // =================================================================
+      const html = ({ el, get, effect }) => {
+        effect(() => {
+          el.innerHTML = get();
+        });
+      };
+      createApp().directive("html", html).mount("#app8");
+    </script>
+  </body>
+</html>
