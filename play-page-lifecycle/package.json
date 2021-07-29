@@ -1,0 +1,18 @@
+{
+  "name": "play-page-lifecycle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel index.html --host 10.94.59.97",
+    "build": "parcel build index.html"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "page-lifecycle": "^0.1.2"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5"
+  }
+}
