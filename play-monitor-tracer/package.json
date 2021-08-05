@@ -1,5 +1,5 @@
 {
-  "name": "play-page-lifecycle",
+  "name": "play-monitor-tracer",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,11 +8,11 @@
     "start": "parcel index.html",
     "build": "parcel build index.html"
   },
+  "keywords": [],
   "license": "ISC",
-  "dependencies": {
-    "page-lifecycle": "^0.1.2"
-  },
   "devDependencies": {
-    "parcel-bundler": "^1.12.5"
+    "cssnano": "^5.0.7",
+    "parcel-bundler": "^1.12.5",
+    "postcss": "^8.3.6"
   }
 }
