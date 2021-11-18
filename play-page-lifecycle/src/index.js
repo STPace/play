@@ -5,7 +5,7 @@ const log = ms => {
     return;
   }
   console.log('page active ms', ms);
-  window.fetch(`http://10.94.59.97:3000/json?ms=${ms}`);
+  window.fetch(`http://localhost:3000/json?ms=${ms}`);
 };
 
 class PageLifeCycleWatcher {
